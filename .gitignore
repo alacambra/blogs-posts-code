@@ -1,0 +1,7 @@
+**/.idea
+**/*.iml
+**/target
+**/*.xml.versionsBackup
+**/.settings
+**/.project
+**/.classpath
