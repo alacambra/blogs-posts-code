@@ -1,5 +1,7 @@
-package tech.lacambla.blog.examples.simple_statemachine;
+package tech.lacambla.blog.examples.simple_statemachine.order;
 
+import tech.lacambla.blog.examples.simple_statemachine.StateMachine;
+import tech.lacambla.blog.examples.simple_statemachine.StateMachineBuilder;
 import tech.lacambla.blog.examples.simple_statemachine.order.states.*;
 
 public class OrderStateMachineFactory {
@@ -16,27 +18,27 @@ public class OrderStateMachineFactory {
 
         .beginTransition()
 
+        .onEvent(Event.START_ORDER)
         .fromState(initState)
         .goToState(bookedState)
-        .onEvent(Event.START_ORDER)
 
         .addAndBeginTransition()
 
+        .onEvent(Event.DISPATCH)
         .fromState(bookedState)
         .goToState(dispatchedState)
-        .onEvent(Event.DISPATCH)
 
         .addAndBeginTransition()
 
+        .onEvent(Event.SEND)
         .fromState(dispatchedState)
         .goToState(onTrackState)
-        .onEvent(Event.SEND)
 
         .addAndBeginTransition()
 
+        .onEvent(Event.DELIVER)
         .fromState(onTrackState)
         .goToState(deliveredState)
-        .onEvent(Event.DELIVER)
 
         .done();
   }

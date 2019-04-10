@@ -14,15 +14,14 @@ public class StateMachine {
 
   public void trigger(Object event, StateObject stateObject) {
 
-    Object target = transitions
+    transitions
         .stream()
         .filter(t -> t.getEvent().equals(event))
-        .filter(t -> t.getSource().equals(stateObject.getState()))
+        .filter(t -> t.getSource().getName().equals(stateObject.getState()))
         .findAny()
         .orElseThrow(() -> new InvalidTransitionException(event, stateObject.getState()))
-        .getTarget();
+        .getTarget().onState(stateObject);
 
-    stateObject.setState(target);
   }
 
 }

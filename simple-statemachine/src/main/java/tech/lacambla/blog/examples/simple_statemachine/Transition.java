@@ -4,22 +4,22 @@ import java.util.Objects;
 
 public class Transition {
 
-  private Object source;
-  private Object target;
+  private State source;
+  private State target;
   private Object event;
 
-  public Transition(Object source, Object target, Object event) {
+  public Transition(State source, State target, Object event) {
 
     this.source = source;
     this.target = target;
     this.event = event;
   }
 
-  public Object getSource() {
+  public State getSource() {
     return source;
   }
 
-  public Object getTarget() {
+  public State getTarget() {
     return target;
   }
 

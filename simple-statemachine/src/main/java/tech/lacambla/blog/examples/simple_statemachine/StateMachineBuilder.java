@@ -24,19 +24,19 @@ public class StateMachineBuilder {
   }
 
   public class TransitionBuilder {
-    private Object source;
-    private Object target;
+    private State source;
+    private State target;
     private Object event;
 
     private TransitionBuilder() {
     }
 
-    public TransitionBuilder fromState(Object source) {
+    public TransitionBuilder fromState(State source) {
       this.source = source;
       return this;
     }
 
-    public TransitionBuilder goToState(Object target) {
+    public TransitionBuilder goToState(State target) {
       this.target = target;
       return this;
     }

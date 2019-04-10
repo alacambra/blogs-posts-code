@@ -1,4 +1,4 @@
-package tech.lacambla.blog.examples.simple_statemachine;
+package tech.lacambla.blog.examples.simple_statemachine.order;
 
 public class Event {
   public static final String START_ORDER = "START_ORDER";

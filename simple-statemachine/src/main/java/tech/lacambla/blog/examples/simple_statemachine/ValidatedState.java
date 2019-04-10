@@ -1,8 +1,11 @@
 package tech.lacambla.blog.examples.simple_statemachine;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import tech.lacambla.blog.examples.simple_statemachine.order.Order;
+
+import javax.validation.*;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class ValidatedState implements State {
 
@@ -15,6 +18,34 @@ public abstract class ValidatedState implements State {
 
   @Override
   public void onState(StateObject stateObject) {
-    validator.validate(stateObject, getClass());
+    enterState((Order) stateObject);
+    Set<ConstraintViolation<StateObject>> violations = validator.validate(stateObject, getValidationGroups());
+    if (!violations.isEmpty()) {
+      throw new ConstraintViolationException("Violations on state " + getName() + ". " + toString(violations), violations);
+    }
+  }
+
+  public abstract void enterState(Order stateObject);
+
+  public abstract Class[] getValidationGroups();
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    State that = (State) o;
+    return that.getName().equalsIgnoreCase(getName());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getName());
+  }
+
+  private static String toString(Set<? extends ConstraintViolation<?>> constraintViolations) {
+    return constraintViolations.stream()
+        .map(cv -> cv == null ? "null" : cv.getPropertyPath() + ": " + cv.getMessage())
+        .collect(Collectors.joining(", "));
+
   }
 }
