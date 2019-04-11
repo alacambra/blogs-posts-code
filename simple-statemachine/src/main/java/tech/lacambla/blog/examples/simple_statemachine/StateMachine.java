@@ -1,8 +1,10 @@
 package tech.lacambla.blog.examples.simple_statemachine;
 
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class StateMachine {
 
@@ -12,9 +14,11 @@ public class StateMachine {
     this.transitions = new ArrayList<>(transitions);
   }
 
-  public void trigger(Object event, StateObject stateObject) {
+  public Optional<ConstraintViolationException> trigger(Object event, StateObject stateObject) {
 
-    transitions
+    Object state = stateObject.getState();
+
+    Optional<ConstraintViolationException> r = transitions
         .stream()
         .filter(t -> t.getEvent().equals(event))
         .filter(t -> t.getSource().getName().equals(stateObject.getState()))
@@ -22,6 +26,10 @@ public class StateMachine {
         .orElseThrow(() -> new InvalidTransitionException(event, stateObject.getState()))
         .getTarget().onState(stateObject);
 
+    //Simulates a roll-back in case of error
+    r.ifPresent(ex -> stateObject.setState(state));
+
+    return r;
   }
 
 }

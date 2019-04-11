@@ -3,6 +3,7 @@ package tech.lacambla.blog.examples.simple_statemachine.order;
 import tech.lacambla.blog.examples.simple_statemachine.StateObject;
 import tech.lacambla.blog.examples.simple_statemachine.order.states.InitState;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class Order implements StateObject {
@@ -12,7 +13,15 @@ public class Order implements StateObject {
 
   @NotNull(groups = {ValidationGroups.Booked.class, ValidationGroups.Delivered.class, ValidationGroups.Dispatched.class, ValidationGroups.OnTrack.class})
   private String id;
+
+  @NotEmpty(groups = {ValidationGroups.Booked.class})
   private String itemId;
+
+  @NotEmpty(groups = {ValidationGroups.Delivered.class, ValidationGroups.Dispatched.class, ValidationGroups.OnTrack.class})
+  private String invoiceRef;
+
+  @NotEmpty(groups = {ValidationGroups.Delivered.class, ValidationGroups.Dispatched.class, ValidationGroups.OnTrack.class})
+  private String address;
 
   public Order() {
     state = new InitState().getName();
@@ -32,6 +41,18 @@ public class Order implements StateObject {
 
   public void setItemId(String itemId) {
     this.itemId = itemId;
+  }
+
+  public void setState(String state) {
+    this.state = state;
+  }
+
+  public void setInvoiceRef(String invoiceRef) {
+    this.invoiceRef = invoiceRef;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   @Override

@@ -4,6 +4,7 @@ import tech.lacambla.blog.examples.simple_statemachine.order.Order;
 
 import javax.validation.*;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,12 +18,14 @@ public abstract class ValidatedState implements State {
   }
 
   @Override
-  public void onState(StateObject stateObject) {
+  public Optional<ConstraintViolationException> onState(StateObject stateObject) {
     enterState((Order) stateObject);
     Set<ConstraintViolation<StateObject>> violations = validator.validate(stateObject, getValidationGroups());
     if (!violations.isEmpty()) {
-      throw new ConstraintViolationException("Violations on state " + getName() + ". " + toString(violations), violations);
+      return Optional.of(new ConstraintViolationException("Violations on state " + getName() + ". " + toString(violations), violations));
     }
+
+    return Optional.empty();
   }
 
   public abstract void enterState(Order stateObject);

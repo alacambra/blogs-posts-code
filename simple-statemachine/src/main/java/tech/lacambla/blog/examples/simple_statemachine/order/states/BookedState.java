@@ -16,8 +16,6 @@ public class BookedState extends ValidatedState {
   @Override
   public void enterState(Order stateObject) {
     stateObject.setState(getName());
-    stateObject.setId(UUID.randomUUID().toString());
-
   }
 
   @Override
