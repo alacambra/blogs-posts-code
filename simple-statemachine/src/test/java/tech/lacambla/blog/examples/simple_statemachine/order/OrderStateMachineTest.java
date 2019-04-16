@@ -9,11 +9,10 @@ import tech.lacambla.blog.examples.simple_statemachine.order.states.OnTrackState
 
 import javax.validation.ConstraintViolationException;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class OrderStateMachineTest {
+public class OrderStateMachineTest {
 
   @Test
   void create() {
