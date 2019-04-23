@@ -57,6 +57,5 @@ public class StateMachineBuilder {
       StateMachineBuilder.this.addTransition(transition);
       return StateMachineBuilder.this.done();
     }
-
   }
 }

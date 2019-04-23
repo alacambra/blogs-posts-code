@@ -11,16 +11,14 @@ import javax.validation.ValidatorFactory;
 import java.math.BigDecimal;
 import java.util.Set;
 
-class OrderServiceTest {
+class ValidationTest {
 
-  private OrderService cut;
   private ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
   private Validator validator;
 
   @BeforeEach
   void setUp() {
     validator = factory.getValidator();
-    cut = new OrderService(validator);
   }
 
   @Test

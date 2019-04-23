@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class OrderStateMachineTest {
 
   @Test
-  void create() {
+  void testStateMachine() {
 
     StateMachine stateMachine = new OrderStateMachineFactory().create();
     Order order = new Order();

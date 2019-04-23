@@ -31,5 +31,4 @@ public class StateMachine {
 
     return r;
   }
-
 }
