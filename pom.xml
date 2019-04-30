@@ -12,6 +12,7 @@
     <modules>
         <module>validation</module>
         <module>simple-statemachine</module>
+        <module>cli</module>
     </modules>
 
     <dependencies>
