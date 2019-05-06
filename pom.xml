@@ -13,6 +13,7 @@
         <module>validation</module>
         <module>simple-statemachine</module>
         <module>cli</module>
+        <module>matchers</module>
     </modules>
 
     <dependencies>
