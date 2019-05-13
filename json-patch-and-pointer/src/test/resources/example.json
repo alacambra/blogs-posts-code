@@ -1,0 +1,20 @@
+{
+  "id": 1,
+  "user":
+  {
+    "name": "some-name",
+    "lastname": "some-lastname"
+  },
+  "user_mentions": [
+    {
+      "name": "Twitter API",
+      "indices": [
+        4,
+        15
+      ],
+      "screen_name": "twitterapi",
+      "id": 6253282,
+      "id_str": "6253282"
+    }
+  ]
+}

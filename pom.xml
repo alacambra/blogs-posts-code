@@ -14,6 +14,7 @@
         <module>simple-statemachine</module>
         <module>cli</module>
         <module>matchers</module>
+        <module>json-patch-and-pointer</module>
     </modules>
 
     <dependencies>
