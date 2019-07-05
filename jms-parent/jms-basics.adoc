@@ -1,0 +1,119 @@
+= Title
+:source-highlighter: coderay
+
+== https://access.redhat.com/documentation/en-us/red_hat_jboss_enterprise_application_platform/7.0/html-single/security_architecture/index#security_realms[Wildlfy Security]
+
+=== Authentication
+
+Authentication refers to identifying a subject and verifying the authenticity of the identification. The most common authentication mechanism is a username and password combination, but other mechanisms, such as shared keys, smart cards or fingerprints, are also used for authentication. When in the context of Java Enterprise Edition declarative security, the result of a successful authentication is called a principal. 
+
+=== Authorization
+
+Authorization refers to a way of specifying access rights or defining access policies. A system can then implement a mechanism to use those policies to permit or deny access to resources for the requester. In many cases, this is implemented by matching a principal with a set of actions or places they are allowed to access, sometimes referred to as a role. 
+
+=== Security Realms
+
+A security realm is effectively an identity store of usernames, passwords, and group membership information that can be used when authenticating users in EJBs, web applications, and the management interface.
+
+[source,xml]
+----
+<security-realms>
+    <security-realm name="ManagementRealm">
+        <authentication>
+            <local default-user="$local" skip-group-loading="true"/>
+            <properties path="mgmt-users.properties" relative-to="jboss.server.config.dir"/>
+        </authentication>
+        <authorization map-groups-to-roles="false">
+            <properties path="mgmt-groups.properties" relative-to="jboss.server.config.dir"/>
+        </authorization>
+    </security-realm>
+    <security-realm name="ApplicationRealm">
+        <server-identities>
+            <ssl>
+                <keystore path="application.keystore" relative-to="jboss.server.config.dir" keystore-password="password" alias="server" key-password="password" generate-self-signed-certificate-host="localhost"/>
+            </ssl>
+        </server-identities>
+        <authentication>
+            <local default-user="$local" allowed-users="*" skip-group-loading="true"/>
+            <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
+        </authentication>
+        <authorization>
+            <properties path="application-roles.properties" relative-to="jboss.server.config.dir"/>
+        </authorization>
+    </security-realm>
+</security-realms>
+----
+
+==== Security Domains
+
+A security domain is a set of Java Authentication and Authorization Service (JAAS) declarative security configurations that one or more applications use to control authentication, authorization, auditing, and mapping. Four security domains are included by default: jboss-ejb-policy, jboss-web-policy, other, and jaspitest. [.underline]#The jboss-ejb-policy and jboss-web-policy security domains are the default authorization mechanisms that are used if *an application’s configured security domain has none*#. Those security domains, along with other, are also used internally within JBoss EAP for authorization and are required for correct operation. The jaspitest security domain is a simple JASPI security domain included for development purposes. 
+
+[source,xml]
+----
+<subsystem xmlns="urn:jboss:domain:security:2.0">
+    <security-domains>
+        <security-domain name="other" cache-type="default">
+            <authentication>
+                <login-module code="Remoting" flag="optional">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+                <login-module code="RealmDirect" flag="required">
+                    <module-option name="password-stacking" value="useFirstPass"/>
+                </login-module>
+            </authentication>
+        </security-domain>
+        <security-domain name="jboss-web-policy" cache-type="default">
+            <authorization>
+                <policy-module code="Delegating" flag="required"/>
+            </authorization>
+        </security-domain>
+        <security-domain name="jaspitest" cache-type="default">
+            <authentication-jaspi>
+                <login-module-stack name="dummy">
+                    <login-module code="Dummy" flag="optional"/>
+                </login-module-stack>
+                <auth-module code="Dummy"/>
+            </authentication-jaspi>
+        </security-domain>
+        <security-domain name="jboss-ejb-policy" cache-type="default">
+            <authorization>
+                <policy-module code="Delegating" flag="required"/>
+            </authorization>
+        </security-domain>
+    </security-domains>
+</subsystem>
+----
+
+== JMS basics
+
+[source,java]
+----
+  @Inject
+  @JMSConnectionFactory("java:/ConnectionFactory")
+  JMSContext context;
+----
+
+[source,java]
+----
+  @Resource(lookup = "java:global/jms/queueName")
+  Queue myQueue;
+----
+
+[source,java]
+----
+@MessageDriven(name = "HelloWorldQueueMDB", activationConfig = {
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/jms/queueName"),
+    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
+public class AsyncConsumer implements MessageListener {
+
+  private static final Logger LOGGER = Logger.getLogger(AsyncConsumer.class.toString());
+
+  /**
+   * @see MessageListener#onMessage(Message)
+   */
+  public void onMessage(Message rcvMessage) {
+    //Do something
+  }
+}
+----

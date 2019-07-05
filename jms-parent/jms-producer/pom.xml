@@ -3,21 +3,22 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>posts-code</artifactId>
+        <artifactId>jms-parent</artifactId>
         <groupId>tech.lacambra.blog</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jms-parent</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>jms-all-in-one</module>
-        <module>jms-broker</module>
-        <module>jms-consumer</module>
-        <module>jms-producer</module>
-        <module>jms-all-in-one-remote</module>
-    </modules>
+    <artifactId>jms-producer</artifactId>
 
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0</version>
+        </dependency>
+    </dependencies>
 
 </project>
