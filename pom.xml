@@ -18,6 +18,7 @@
         <module>json-serialization</module>
         <module>spock</module>
         <module>jms-parent</module>
+        <module>dades-territorials-catalunya</module>
     </modules>
 
     <dependencies>

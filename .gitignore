@@ -6,3 +6,5 @@
 **/.project
 **/.classpath
 **/.DS_Store
+**/*/dev
+**/*/*.pdf
