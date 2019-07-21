@@ -15,10 +15,10 @@
         <module>cli</module>
         <module>matchers</module>
         <module>json-patch-and-pointer</module>
-        <module>json-serialization</module>
         <module>spock</module>
         <module>jms-parent</module>
         <module>dades-territorials-catalunya</module>
+        <module>spring-boot</module>
     </modules>
 
     <dependencies>
