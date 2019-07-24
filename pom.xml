@@ -19,6 +19,7 @@
         <module>jms-parent</module>
         <module>dades-territorials-catalunya</module>
         <module>spring-boot</module>
+        <module>security</module>
     </modules>
 
     <dependencies>

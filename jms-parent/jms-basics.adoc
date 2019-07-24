@@ -35,10 +35,39 @@ public class AsyncConsumer implements MessageListener {
 ----
 
 [source,java]
-.Declare an async listener for incoming messages
+.Declare an async listener for incoming messages when injecting a context
 ----
-@JMSPasswordCredential(userName = "userName", password = "password")
+ @Inject
+ @JMSConnectionFactory("java:jboss/exported/jms/RemoteConnectionFactory")
+ @JMSPasswordCredential(userName = "jms", password = "jms")
+ JMSContext context;
 ----
+
+[source,java]
+.Authenticate on a MessageListener. Pass properties user and password.
+----
+@MessageDriven(activationConfig = {
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/jms/pointsQueue"),
+    @ActivationConfigProperty(propertyName = "connectionFactoryLookup", propertyValue = "java:jboss/exported/jms/RemoteConnectionFactory"),
+    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+    @ActivationConfigProperty(propertyName = "user", propertyValue = "jms"),
+        @ActivationConfigProperty(propertyName = "password", propertyValue = "jms"),
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+})
+----
+
+[NOTE]
+====
+https://developer.jboss.org/thread/266416
+
+In that case you would need to re-configure the relevant connector to point to the proper interface.  Here's how the configuration works:
+
+    JMS client looks up and uses a particular connection factory, e.g. "jms/RemoteConnectionFactory".
+    Said connection factory is configured to use a particular connector, e.g. "netty".
+    The connector is configured with a particular socket-binding, e.g. "messaging".
+    The socket-binding is configured to use a particular interface, e.g. "public".
+    The interface is configured to listen on a particular inet-address, e.g. 0.0.0.0 in your case.
+====
 
 
 == Jboss specific
@@ -98,4 +127,24 @@ Per default, when using java:jboss/exported/jms/RemoteConnectionFactory, the App
 <subsystem xmlns="urn:jboss:domain:remoting:4.0">
     <http-connector name="http-remoting-connector" connector-ref="default" security-realm="ApplicationRealm"/>
 </subsystem>
+----
+
+----
+
+
+    Both type of connectors are used for establishing remote connection. Why is there a need to have both ?
+
+The "http" acceptor/connector pair supports establishing connections over HTTP (as the name suggests).  These connections are then upgraded to "normal" TCP connections using the Artemis core protocol.  This upgrade functionality allows the application server to listen to just a single port (i.e. the HTTP port) and service lots of different kinds of protocols and connections.  The "remote" acceptor/connection pair doesn't support this HTTP upgrade functionality.
+
+
+
+    Can I just use http-connector?
+
+Depending on your use-case, yes.
+
+
+
+    What are the scenarios that I have to use remote-connector instead of http-connector?
+
+You'd a "remote" acceptor or connector if you were either accepting connections from to establishing a connection to a server that didn't support the HTTP upgrade functionality provided by the "http" acceptor/connector pair.  For example, if you were connecting to a standalone instance of Artemis you'd use a remote-connector or if you were accepting a connection from a legacy HornetQ client you'd use a remote-acceptor.
 ----

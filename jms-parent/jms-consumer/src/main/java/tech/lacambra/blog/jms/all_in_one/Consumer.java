@@ -1,6 +1,7 @@
 package tech.lacambra.blog.jms.all_in_one;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.Schedule;
+import javax.inject.Inject;
 import javax.jms.*;
 import java.util.Enumeration;
 import java.util.logging.Level;
@@ -10,23 +11,16 @@ import java.util.logging.Logger;
 //@Startup
 public class Consumer {
 
-//  @Inject
-//  @JMSConnectionFactory("java:jboss/exported/jms/RemoteConnectionFactory")
+  @Inject
+  @JMSConnectionFactory("java:jboss/exported/jms/RemoteConnectionFactory")
+  @JMSPasswordCredential(userName = "jms", password = "jms")
   JMSContext context;
 
-//  @Resource(lookup = "java:jboss/exported/jms/RemoteConnectionFactory")
-  ConnectionFactory connectionFactory;
-
 //  @Resource(lookup = "java:global/jms/pointsQueue")
+//  @JMSPasswordCredential(userName = "jms", password = "jms")
   Queue pointsQueue;
 
-  @PostConstruct
-  public void init() throws JMSException {
-    Connection connection = connectionFactory.createConnection("jms", "jms");
-    System.out.println("Starting received");
-    receiveMessage();
-  }
-
+  @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
   public String receiveMessage() {
     try (JMSConsumer consumer = context.createConsumer(pointsQueue)) {
       String message = consumer.receiveBody(String.class);

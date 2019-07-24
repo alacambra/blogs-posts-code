@@ -1,18 +1,20 @@
 package tech.lacambra.blog.jms.all_in_one;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.MessageDriven;
+import javax.jms.*;
 import java.util.logging.Logger;
 
-//@MessageDriven(activationConfig = {
-//    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/jms/pointsQueue"),
-//    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+@JMSDestinationDefinition(name = "java:global/jms/pointsQueue", interfaceName = "javax.jms.Queue")
+@MessageDriven(activationConfig = {
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/jms/pointsQueue"),
+    @ActivationConfigProperty(propertyName = "connectionFactoryLookup", propertyValue = "java:jboss/exported/jms/RemoteConnectionFactory"),
+    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+    @ActivationConfigProperty(propertyName = "user", propertyValue = "jms"),
+    @ActivationConfigProperty(propertyName = "password", propertyValue = "jms"),
 //    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "type = 'T'"),
-//    @ActivationConfigProperty(propertyName = "connectionParameters", propertyValue = "host=localhost;port=5445"),
-//    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
-
+    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")
+})
 public class AsyncConsumerForT1 implements MessageListener {
 
   private static final Logger LOGGER = Logger.getLogger(AsyncConsumerForT1.class.toString());
