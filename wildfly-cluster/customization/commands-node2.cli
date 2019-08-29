@@ -1,0 +1,18 @@
+# Mark the commands below to be run as a batch
+batch
+/subsystem=messaging-activemq/server=default:write-attribute(name=cluster-user,value=admin123
+/subsystem=messaging-activemq/server=default:write-attribute(name=cluster-password,value=admin)
+
+/system-property=foo:add(value=bar)
+
+/interface=management/:write-attribute(name=inet-address,value=${jboss.bind.address.management:10.5.0.3})
+/interface=public/:write-attribute(name=inet-address,value=${jboss.bind.address:10.5.0.3})
+/interface=private/:write-attribute(name=inet-address,value=${jboss.bind.address.private:10.5.0.3})
+
+/subsystem=infinispan/cache-container=infinispan_cache/:add(default-cache=default_cache, jndi-name=java:jboss/infinispan/container/infinispan_cache, start=LAZY)
+/subsystem=infinispan/cache-container=infinispan_cache/transport=TRANSPORT/:add(lock-timeout=60000, stack=tcp)
+/subsystem=infinispan/cache-container=infinispan_cache/replicated-cache=default_cache:add(mode=SYNC)
+/subsystem=infinispan/cache-container=infinispan_cache/replicated-cache=default_cache/expiration=EXPIRATION:add(lifespan=10000,max-idle=10000)
+
+# Execute the batch
+run-batch

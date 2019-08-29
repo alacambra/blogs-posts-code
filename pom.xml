@@ -22,6 +22,7 @@
         <module>security</module>
         <module>playground</module>
         <module>quarkus</module>
+        <module>wildfly-cluster</module>
     </modules>
 
     <dependencies>

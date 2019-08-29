@@ -1,0 +1,62 @@
+version: '3'
+services:
+  node1:
+    container_name: node1
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE: -Djboss.node.name=server1
+        NODE_NAME: node1
+    environment:
+      - TZ=Europe/Berlin
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    volumes:
+      - "/Users/albertlacambra/git/lacambra.tech/blogs-posts-code/wildfly-cluster/deployment1:/opt/jboss/wildfly/standalone/deployments"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.2
+  node2:
+    container_name: node2
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE: -Djboss.node.name=server2
+        NODE_NAME: node2
+    environment:
+      - TZ=Europe/Berlin
+    ports:
+      - "8081:8080"
+      - "9991:9990"
+    volumes:
+      - "/Users/albertlacambra/git/lacambra.tech/blogs-posts-code/wildfly-cluster/deployment2:/opt/jboss/wildfly/standalone/deployments"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.3
+  node3:
+    container_name: node3
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE: -Djboss.node.name=server3
+        NODE_NAME: node3
+    environment:
+      - TZ=Europe/Berlin
+    ports:
+      - "8082:8080"
+      - "9992:9990"
+    volumes:
+      - "/Users/albertlacambra/git/lacambra.tech/blogs-posts-code/wildfly-cluster/deployment3:/opt/jboss/wildfly/standalone/deployments"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.4
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
