@@ -20,6 +20,8 @@
         <module>dades-territorials-catalunya</module>
         <module>spring-boot</module>
         <module>security</module>
+        <module>playground</module>
+        <module>quarkus</module>
     </modules>
 
     <dependencies>
