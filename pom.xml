@@ -23,6 +23,7 @@
         <module>playground</module>
         <module>quarkus</module>
         <module>wildfly-cluster</module>
+        <module>apache-poi</module>
     </modules>
 
     <dependencies>
