@@ -4,6 +4,7 @@ ARG NODE
 ARG NODE_NAME
 
 RUN /opt/jboss/wildfly/bin/add-user.sh admin Admin#70365 --silent
+RUN /opt/jboss/wildfly/bin/add-user.sh jms jms -g guest -a --silent
 ADD customization /opt/jboss/wildfly/customization
 
 RUN /opt/jboss/wildfly/customization/execute.sh standalone $JBOSS_CONFIG $NODE_NAME

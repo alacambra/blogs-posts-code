@@ -11,6 +11,10 @@
 
     <artifactId>jms-consumer</artifactId>
 
+    <properties>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+    </properties>
+
     <packaging>war</packaging>
 
     <dependencies>

@@ -3,7 +3,6 @@ package tech.lacambra.blog.jms.all_in_one;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 import javax.inject.Inject;
 import javax.jms.*;
 import java.util.Enumeration;
@@ -11,19 +10,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Singleton
-@Startup
 public class Consumer {
 
   @Inject
-  @JMSConnectionFactory("java:jboss/exported/jms/RemoteConnectionFactory")
+  @JMSConnectionFactory("java:jboss/DefaultJMSConnectionFactory2")
   @JMSPasswordCredential(userName = "jms", password = "jms")
   JMSContext context;
 
-  @Resource(lookup = "java:global/jms/pointsQueue")
+  @Resource(lookup = "java:/jms/queue/DLQ")
   Queue pointsQueue;
 
   @PostConstruct
-  public void init() throws JMSException {
+  public void init(){
     System.out.println("Starting received");
     receiveMessage();
   }

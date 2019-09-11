@@ -11,7 +11,7 @@ public class Producer {
   @JMSPasswordCredential(userName = "jms", password = "jms")
   JMSContext context;
 
-  @Resource(lookup = "java:global/jms/pointsQueue")
+  @Resource(lookup = "java:/jms/queue/DLQ")
   Queue pointsQueue;
 
   public void sendMessage(String message) {

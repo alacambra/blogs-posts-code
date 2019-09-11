@@ -1,16 +1,18 @@
 package tech.lacambra.blog.jms.all_in_one;
 
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 import java.util.logging.Logger;
 
-//@MessageDriven(activationConfig = {
-//    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:global/jms/pointsQueue"),
-//    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-//    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "type = 'T2'"),
-//    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
+@MessageDriven(activationConfig = {
+    @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:/jms/queue/DLQ"),
+    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+    @ActivationConfigProperty(propertyName = "messageSelector", propertyValue = "type = 'T2'"),
+    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
 public class AsyncConsumerForT2 implements MessageListener {
 
   private static final Logger LOGGER = Logger.getLogger(AsyncConsumerForT2.class.toString());

@@ -105,8 +105,22 @@ In that case you would need to re-configure the relevant connector to point to t
         </subsystem>
 ----
 
+A user must be add on the correct role:
+[source]
+----
+/opt/jboss/wildfly/bin/add-user.sh jms jms -g guest -a --silent
+----
+
+In case we want to take the credentials out od the code, they can be set in the configuration file. However, to do that we must create *pooled-connection-factory*
+
+[source]
+----
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra2:add(user=jms, password=jms, connectors=[http-connector], ha=true, block-on-acknowledge=true, reconnect-attempts=-1, transaction=xa, entries=[java:/JmsXA2 java:jboss/DefaultJMSConnectionFactory2])
+----
+
 The role element defines the rule a user must have.
-.Configuration of allowd user roles
+.Configuration of allowed user roles
+
 [source,xml]
 ----
 <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>

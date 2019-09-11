@@ -14,5 +14,6 @@ batch
 /subsystem=infinispan/cache-container=infinispan_cache/replicated-cache=default_cache:add(mode=SYNC)
 /subsystem=infinispan/cache-container=infinispan_cache/replicated-cache=default_cache/expiration=EXPIRATION:add(lifespan=10000,max-idle=10000)
 
+/subsystem=messaging-activemq/server=default/pooled-connection-factory=activemq-ra2:add(user=jms, password=jms, connectors=[http-connector], ha=true, block-on-acknowledge=true, reconnect-attempts=-1, transaction=xa, entries=[java:/JmsXA2 java:jboss/DefaultJMSConnectionFactory2])
 # Execute the batch
 run-batch
