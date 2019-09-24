@@ -3,8 +3,7 @@ package tech.lacambra.poi;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -51,8 +50,8 @@ public class PoiXlslTest {
 //    CellCopyPolicy cellCopyPolicy = new CellCopyPolicy();
 //    cellCopyPolicy.setCopyCellFormula(true);
 
-    int totalPositions = 1;
-    int totalEntgelds = 1;
+    int totalPositions = 10;
+    int totalEntgelds = 10;
     int offset = 0;
 
 //    new Model().renderTitle(workbook, sheet, new CellReference("A40"), oSheet.getRow(16).getCell(0).getCellStyle());
@@ -66,7 +65,28 @@ public class PoiXlslTest {
     for (int i = 0; i < totalPositions; i++) {
       int destRow = new CellReference("A14").getRow() + i + offset;
       sheet.copyRows(Collections.singletonList(position), destRow, new CellCopyPolicy.Builder().mergedRegions(false).build());
-      sheet.getRow(destRow).getCell(0).setCellValue(i);
+
+      Cell cell = sheet.getRow(destRow).getCell(0);
+      XSSFRichTextString richTextString = new XSSFRichTextString();
+      XSSFFont xssfFont = new XSSFFont();
+      xssfFont.setStrikeout(true);
+      XSSFColor xssfColor = new XSSFColor();
+      xssfColor.setRGB(new byte[]{0, 120, 20});
+      xssfFont.setColor(xssfColor);
+      richTextString.append("HElloo " + i + "", xssfFont);
+
+      XSSFFont xssfFont2 = new XSSFFont();
+      xssfFont.setStrikeout(false);
+      XSSFColor xssfColor2 = new XSSFColor();
+      xssfColor2.setRGB(new byte[]{0, 0, 120});
+      xssfFont2.setColor(xssfColor2);
+      richTextString.append("\r\nHElloo " + i, xssfFont2);
+
+      CellStyle cellStyle = cell.getCellStyle();
+      cellStyle.setWrapText(true);
+      cell.setCellStyle(cellStyle);
+
+      cell.setCellValue(richTextString);
 
     }
 
