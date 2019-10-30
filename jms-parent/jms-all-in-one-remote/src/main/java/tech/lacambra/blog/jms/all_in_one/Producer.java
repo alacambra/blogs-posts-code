@@ -15,14 +15,14 @@ public class Producer {
   JMSContext context;
 
   @Resource(lookup = "java:/jms/queue/DLQ")
-  Queue pointsQueue;
+  Queue queue;
 
   public void sendMessage(String message) {
-    context.createProducer().send(pointsQueue, message);
+    context.createProducer().send(queue, message);
   }
 
   public void sendMessage(Message message) {
-    context.createProducer().send(pointsQueue, message);
+    context.createProducer().send(queue, message);
   }
 
 }

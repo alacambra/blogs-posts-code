@@ -24,6 +24,7 @@
         <module>quarkus</module>
         <module>wildfly-cluster</module>
         <module>apache-poi</module>
+        <module>reflexion</module>
     </modules>
 
     <dependencies>
