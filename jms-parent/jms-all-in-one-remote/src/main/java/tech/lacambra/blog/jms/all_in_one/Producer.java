@@ -2,16 +2,14 @@ package tech.lacambra.blog.jms.all_in_one;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.jms.JMSConnectionFactory;
-import javax.jms.JMSContext;
-import javax.jms.Message;
-import javax.jms.Queue;
+import javax.jms.*;
 
 public class Producer {
 
   @Inject
   @JMSConnectionFactory("java:jboss/DefaultJMSConnectionFactory2")
-//  @JMSPasswordCredential(userName = "jms", password = "jms")
+//  @JMSPasswordCredential(userName = "admin", password = "admin")
+  @JMSPasswordCredential(userName = "jms", password = "jms")
   JMSContext context;
 
   @Resource(lookup = "java:/jms/queue/DLQ")
