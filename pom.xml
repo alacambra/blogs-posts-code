@@ -26,6 +26,7 @@
         <module>apache-poi</module>
         <module>reflexion</module>
         <module>keyset-pagination</module>
+        <module>collectors</module>
     </modules>
 
     <dependencies>
